@@ -63,6 +63,7 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
 			<?php if (isset($_SESSION['connect'])) { ?>
 				<h1>Bonjour</h1>
 				<p>Qu'allez-vous regarder aujourd'hui?</p>
+				<small><a href="logout.php">Déconnexion</a></small>
 			<?php } else { ?>
 				<h1>S'identifier</h1>
 				<?php
