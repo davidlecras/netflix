@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+if (isset($_SESSION['connect'])) {
+	header('location: index.php');
+	exit;
+}
+
 // Detecter envoie du formulaire:
 
 if (!empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['password_two'])) {
