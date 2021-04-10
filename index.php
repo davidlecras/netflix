@@ -1,5 +1,6 @@
 <?php
 session_start();
+require('src/log.php');
 
 if (!empty($_POST['email']) && !empty($_POST['password'])) {
 	require('src/connect.php');
@@ -35,6 +36,9 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
 		if ($password == $user['password']) {
 			$_SESSION['connect'] = 1;
 			$_SESSION['email'] = $user['email'];
+			if (isset($_POST['auto'])) {
+				setcookie("auth", $user['secret'], time() + 365 * 24 * 3600, '/', null, false, true);
+			}
 			header('location: index.php?success=1');
 			exit;
 		} else {
@@ -62,6 +66,11 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
 		<div id="login-body">
 			<?php if (isset($_SESSION['connect'])) { ?>
 				<h1>Bonjour</h1>
+				<?php
+				if (isset($_GET['success'])) {
+					echo '<div class="alert success">Vous êtes maintenant connecté!</div>';
+				}
+				?>
 				<p>Qu'allez-vous regarder aujourd'hui?</p>
 				<small><a href="logout.php">Déconnexion</a></small>
 			<?php } else { ?>
@@ -71,8 +80,6 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
 					if (isset($_GET['message'])) {
 						echo '<div class="alert error">' . htmlspecialchars($_GET['message']) . '<:div>';
 					}
-				} else if (isset($_GET['success'])) {
-					echo '<div class="alert success">Vous êtes maintenant connecté!</div>';
 				}
 				?>
 				<form method="post" action="index.php">
